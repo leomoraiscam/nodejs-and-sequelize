@@ -23,7 +23,7 @@
       }
     ],
     "consistent-return": "warn",
-    "linebreak-style": 0,
+    "linebreak-style": "error",
     "no-console": "warn",
     "no-unused-vars": "warn",
     "camelcase": "error"
