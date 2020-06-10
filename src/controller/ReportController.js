@@ -13,11 +13,18 @@ module.exports = {
       include: [
         {
           association: 'addresses',
-          where: { street: 'Rua Guilherme Gembala' },
+          where: {
+            street: 'Rua Guilherme Gembala',
+          },
         },
         {
           association: 'techs',
-          where: { name: { [Op.iLike]: 'React%' } },
+          required: false,
+          where: {
+            name: {
+              [Op.iLike]: 'React%',
+            },
+          },
         },
       ],
     });
