@@ -9,7 +9,7 @@ module.exports = {
       include: {
         association: 'techs',
         attributes: ['name'],
-        through: { attributes: [] },
+        through: { attributes: ['user_id'] },
       },
     });
 
