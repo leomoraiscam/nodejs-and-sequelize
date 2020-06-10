@@ -10,6 +10,16 @@ module.exports = {
           [Op.iLike]: '%@gmail.com.br',
         },
       },
+      include: [
+        {
+          association: 'addresses',
+          where: { street: 'Rua Guilherme Gembala' },
+        },
+        {
+          association: 'techs',
+          where: { name: { [Op.iLike]: 'React%' } },
+        },
+      ],
     });
 
     return res.json(users);
