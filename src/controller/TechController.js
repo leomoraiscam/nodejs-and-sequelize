@@ -1,66 +1,59 @@
 const User = require('../models/User');
 const Tech = require('../models/Tech');
+const GlobalError = require('../errors/GlobalError');
 
 module.exports = {
   async index(req, res) {
-    try {
-      const { user_id } = req.params;
+    const { user_id } = req.params;
 
-      const user = await User.findByPk(user_id, {
-        include: {
-          association: 'techs',
-          attributes: ['name'],
-          through: { attributes: ['user_id'] },
-        },
-      });
+    const user = await User.findByPk(user_id, {
+      include: {
+        association: 'techs',
+        attributes: ['name'],
+        through: { attributes: ['user_id'] },
+      },
+    });
 
-      return res.json(user.techs);
-    } catch (error) {
-      return res.status(400).json(error);
+    if (!user) {
+      throw new GlobalError('Usuário não encontrado', 204);
     }
+
+    return res.json(user.techs);
   },
   async store(req, res) {
-    try {
-      const { user_id } = req.params;
-      const { name } = req.body;
+    const { user_id } = req.params;
+    const { name } = req.body;
 
-      const user = await User.findByPk(user_id);
+    const user = await User.findByPk(user_id);
 
-      if (!user) {
-        return res.status(400).json({ error: 'User not found' });
-      }
-
-      const [tech] = await Tech.findOrCreate({
-        where: { name },
-      });
-
-      await user.addTech(tech);
-
-      return res.json(tech);
-    } catch (error) {
-      return res.status(400).json(error);
+    if (!user) {
+      throw new GlobalError('Usuário não encontrado', 204);
     }
+
+    const [tech] = await Tech.findOrCreate({
+      where: { name },
+    });
+
+    await user.addTech(tech);
+
+    return res.json({ messgae: 'Tecnologia criada com sucesso', tech });
   },
   async delete(req, res) {
-    try {
-      const { user_id } = req.params;
-      const { name } = req.body;
+    const { user_id } = req.params;
+    const { name } = req.body;
 
-      const user = await User.findByPk(user_id);
+    const user = await User.findByPk(user_id);
 
-      if (!user) {
-        return res.status(400).json({ error: 'User not found' });
-      }
-
-      const tech = await User.findOne({
-        where: { name },
-      });
-
-      await user.removeTech(tech);
-
-      return res.json();
-    } catch (error) {
-      return res.status(400).json(error);
+    if (!user) {
+      throw new GlobalError('Usuário não encontrado', 204);
     }
+
+    const tech = await User.findOne({
+      where: { name },
+    });
+
+    await user.removeTech(tech);
+
+    return res.json({ message: 'Usuário deletado com sucesso' });
   },
 };

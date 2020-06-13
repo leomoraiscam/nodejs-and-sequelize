@@ -12,6 +12,7 @@ const TechValidation = require('./validation/techController');
 const UserValidation = require('./validation/userController');
 
 routes.get('/users', UserController.index);
+routes.get('/users/:id', UserController.show);
 routes.post('/users', UserValidation.store, UserController.store);
 
 routes.get('/users/:user_id/addresses', AddressController.index);

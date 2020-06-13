@@ -1,38 +1,39 @@
 const { Op } = require('sequelize');
 const User = require('../models/User');
+const GlobalError = require('../errors/GlobalError');
 
 module.exports = {
   async show(req, res) {
-    try {
-      const users = await User.findAll({
-        attributes: ['name', 'email'],
-        where: {
-          email: {
-            [Op.iLike]: '%@gmail.com.br',
+    const users = await User.findAll({
+      attributes: ['name', 'email'],
+      where: {
+        email: {
+          [Op.iLike]: '%@gmail.com.br',
+        },
+      },
+      include: [
+        {
+          association: 'addresses',
+          where: {
+            street: 'Rua Guilherme Gembala',
           },
         },
-        include: [
-          {
-            association: 'addresses',
-            where: {
-              street: 'Rua Guilherme Gembala',
+        {
+          association: 'techs',
+          required: false,
+          where: {
+            name: {
+              [Op.iLike]: 'React%',
             },
           },
-          {
-            association: 'techs',
-            required: false,
-            where: {
-              name: {
-                [Op.iLike]: 'React%',
-              },
-            },
-          },
-        ],
-      });
+        },
+      ],
+    });
 
-      return res.json(users);
-    } catch (error) {
-      return res.status(400).json(error);
+    if (!users) {
+      throw new GlobalError('Usuário não encontrado', 204);
     }
+
+    return res.json(users);
   },
 };
