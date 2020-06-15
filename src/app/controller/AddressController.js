@@ -1,8 +1,8 @@
-const User = require('../models/User');
-const Address = require('../models/Address');
-const GlobalError = require('../errors/GlobalError');
+import User from '../models/User';
+import Address from '../models/Address';
+import GlobalError from '../../errors/GlobalError';
 
-module.exports = {
+class AddressController {
   async index(req, res) {
     const { user_id } = req.params;
 
@@ -15,7 +15,8 @@ module.exports = {
     }
 
     return res.json(user);
-  },
+  }
+
   async store(req, res) {
     const { user_id } = req.params;
     const { zipcode, street, number } = req.body;
@@ -37,5 +38,7 @@ module.exports = {
     });
 
     return res.json({ message: 'Endereço criado com sucesso', address });
-  },
-};
+  }
+}
+
+export default new AddressController();

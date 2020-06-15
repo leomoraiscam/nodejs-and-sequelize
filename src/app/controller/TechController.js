@@ -1,8 +1,8 @@
-const User = require('../models/User');
-const Tech = require('../models/Tech');
-const GlobalError = require('../errors/GlobalError');
+import User from '../models/User';
+import Tech from '../models/Tech';
+import GlobalError from '../../errors/GlobalError';
 
-module.exports = {
+class TechController {
   async index(req, res) {
     const { user_id } = req.params;
 
@@ -19,7 +19,8 @@ module.exports = {
     }
 
     return res.json(user.techs);
-  },
+  }
+
   async store(req, res) {
     const { user_id } = req.params;
     const { name } = req.body;
@@ -37,7 +38,8 @@ module.exports = {
     await user.addTech(tech);
 
     return res.json({ messgae: 'Tecnologia criada com sucesso', tech });
-  },
+  }
+
   async delete(req, res) {
     const { user_id } = req.params;
     const { name } = req.body;
@@ -55,5 +57,7 @@ module.exports = {
     await user.removeTech(tech);
 
     return res.json({ message: 'Usuário deletado com sucesso' });
-  },
-};
+  }
+}
+
+export default new TechController();

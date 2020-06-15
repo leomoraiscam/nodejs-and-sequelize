@@ -1,16 +1,17 @@
-const User = require('../models/User');
-const GlobalError = require('../errors/GlobalError');
+import User from '../models/User';
+import GlobalError from '../../errors/GlobalError';
 
-module.exports = {
+class UserController {
   async index(req, res) {
     const user = await User.findAll();
 
-    if (!user.length) {
+    if (!user) {
       throw new GlobalError('Usuários não encontrados', 204);
     }
 
     return res.json(user);
-  },
+  }
+
   async show(req, res) {
     const { id } = req.params;
 
@@ -21,7 +22,8 @@ module.exports = {
     }
 
     return res.json(user);
-  },
+  }
+
   async store(req, res) {
     const { name, email } = req.body;
 
@@ -35,5 +37,7 @@ module.exports = {
     }
 
     return res.json({ message: 'Usuário criado com sucesso', user });
-  },
-};
+  }
+}
+
+export default new UserController();

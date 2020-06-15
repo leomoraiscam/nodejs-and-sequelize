@@ -1,8 +1,8 @@
-const { Op } = require('sequelize');
-const User = require('../models/User');
-const GlobalError = require('../errors/GlobalError');
+import { Op } from 'sequelize';
+import User from '../models/User';
+import GlobalError from '../../errors/GlobalError';
 
-module.exports = {
+class ReportController {
   async show(req, res) {
     const users = await User.findAll({
       attributes: ['name', 'email'],
@@ -35,5 +35,7 @@ module.exports = {
     }
 
     return res.json(users);
-  },
-};
+  }
+}
+
+export default new ReportController();
