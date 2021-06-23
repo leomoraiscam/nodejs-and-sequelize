@@ -1,6 +1,7 @@
 import User from '../models/User';
 import Tech from '../models/Tech';
 import GlobalError from '../../errors/GlobalError';
+import CreateTechsService from '../services/techs/CreateTechsService';
 
 class TechController {
   async index(req, res) {
@@ -25,19 +26,12 @@ class TechController {
     const { user_id } = req.params;
     const { name } = req.body;
 
-    const user = await User.findByPk(user_id);
-
-    if (!user) {
-      throw new GlobalError('Usuário não encontrado', 204);
-    }
-
-    const [tech] = await Tech.findOrCreate({
-      where: { name },
+    const tech = await CreateTechsService.execute({
+      user_id,
+      name,
     });
 
-    await user.addTech(tech);
-
-    return res.json({ messgae: 'Tecnologia criada com sucesso', tech });
+    return res.status(201).json(tech);
   }
 
   async delete(req, res) {
