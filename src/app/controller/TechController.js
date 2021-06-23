@@ -1,17 +1,19 @@
 import CreateTechsService from '../services/techs/CreateTechsService';
 
 class TechController {
-  async store(req, res) {
-    const { user_id } = req.params;
-    const { name } = req.body;
+  async create(request, response) {
+    const { user_id } = request.params;
+    const { name } = request.body;
 
-    const tech = await CreateTechsService.execute({
+    const createTechsService = new CreateTechsService();
+
+    const tech = await createTechsService.execute({
       user_id,
       name,
     });
 
-    return res.status(201).json(tech);
+    return response.status(201).json(tech);
   }
 }
 
-export default new TechController();
+export default TechController;

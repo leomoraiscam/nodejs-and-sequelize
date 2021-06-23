@@ -1,19 +1,21 @@
 import CreateAddressService from '../services/addresses/CreateAddressService';
 
 class AddressController {
-  async store(req, res) {
-    const { user_id } = req.params;
-    const { zip_code, street, number } = req.body;
+  async create(request, response) {
+    const { user_id } = request.params;
+    const { zip_code, street, number } = request.body;
 
-    const address = await CreateAddressService.execute({
+    const createAddressService = new CreateAddressService();
+
+    const address = await createAddressService.execute({
       user_id,
       zip_code,
       street,
       number,
     });
 
-    return res.status(201).json(address);
+    return response.status(201).json(address);
   }
 }
 
-export default new AddressController();
+export default AddressController;

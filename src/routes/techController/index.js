@@ -1,14 +1,15 @@
 import { Router } from 'express';
 
 import TechController from '../../app/controller/TechController';
-import TechValidation from '../../app/validation/techController';
+import techValidation from '../../app/validation/techController';
 
 const routes = new Router();
+const techController = new TechController();
 
 routes.post(
   '/users/:user_id/techs',
-  TechValidation.store,
-  TechController.store
+  techValidation.create,
+  techController.create
 );
 
 export default routes;

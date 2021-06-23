@@ -1,14 +1,15 @@
 import { Router } from 'express';
 
 import AddressController from '../../app/controller/AddressController';
-import AddressValidation from '../../app/validation/addressController';
+import addressValidation from '../../app/validation/addressController';
 
 const routes = new Router();
+const addressController = new AddressController();
 
 routes.post(
   '/users/:user_id/addresses',
-  AddressValidation.store,
-  AddressController.store
+  addressValidation.create,
+  addressController.create
 );
 
 export default routes;

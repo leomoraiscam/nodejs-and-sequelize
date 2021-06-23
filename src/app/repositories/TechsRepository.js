@@ -10,4 +10,4 @@ class TechsRepository {
   }
 }
 
-export default new TechsRepository();
+export default TechsRepository;

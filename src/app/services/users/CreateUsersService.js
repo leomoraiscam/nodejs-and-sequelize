@@ -3,13 +3,15 @@ import GlobalError from '../../../errors/GlobalError';
 
 class CreateUsersService {
   async execute({ name, email }) {
-    const userAlreadyExist = await UsersRepository.findByEmail(email);
+    const usersRepository = new UsersRepository();
+
+    const userAlreadyExist = await usersRepository.findByEmail(email);
 
     if (userAlreadyExist) {
       throw new GlobalError('user with this email already exist', 409);
     }
 
-    const user = await UsersRepository.create({
+    const user = await usersRepository.create({
       name,
       email,
     });
@@ -18,4 +20,4 @@ class CreateUsersService {
   }
 }
 
-export default new CreateUsersService();
+export default CreateUsersService;

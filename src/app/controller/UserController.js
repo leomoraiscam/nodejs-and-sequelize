@@ -6,7 +6,9 @@ class UserController {
   async show(request, response) {
     const { id } = request.params;
 
-    const user = await ShowUsersService.execute(id);
+    const showUsersService = new ShowUsersService();
+
+    const user = await showUsersService.execute(id);
 
     return response.status(200).json(user);
   }
@@ -14,7 +16,9 @@ class UserController {
   async create(request, response) {
     const { name, email } = request.body;
 
-    const user = await CreateUsersService.execute({
+    const createUsersService = new CreateUsersService();
+
+    const user = await createUsersService.execute({
       name,
       email,
     });
@@ -22,13 +26,15 @@ class UserController {
     return response.status(201).json(user);
   }
 
-  async delete(req, res) {
-    const { user_id } = req.params;
+  async delete(request, response) {
+    const { id } = request.params;
 
-    await DeleteUsersService.execute(user_id);
+    const deleteUsersService = new DeleteUsersService();
 
-    return res.status(204).send();
+    await deleteUsersService.execute(id);
+
+    return response.status(204).send();
   }
 }
 
-export default new UserController();
+export default UserController;

@@ -2,15 +2,17 @@ import UsersRepository from '../../repositories/UsersRepository';
 import GlobalError from '../../../errors/GlobalError';
 
 class DeleteUsersService {
-  async execute(user_id) {
-    const user = await UsersRepository.findById(user_id);
+  async execute(id) {
+    const usersRepository = new UsersRepository();
+
+    const user = await usersRepository.findById(id);
 
     if (!user) {
       throw new GlobalError('this specif user not found', 404);
     }
 
-    await UsersRepository.delete(user_id);
+    await usersRepository.delete(id);
   }
 }
 
-export default new DeleteUsersService();
+export default DeleteUsersService;

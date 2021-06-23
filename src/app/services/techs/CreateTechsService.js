@@ -4,13 +4,16 @@ import GlobalError from '../../../errors/GlobalError';
 
 class CreateTechsService {
   async execute({ user_id, name }) {
-    const user = await UsersRepository.findById(user_id);
+    const usersRepository = new UsersRepository();
+    const techsRepository = new TechsRepository();
+
+    const user = await usersRepository.findById(user_id);
 
     if (!user) {
       throw new GlobalError('this specif user not found', 404);
     }
 
-    const [tech] = await TechsRepository.create({
+    const [tech] = await techsRepository.create({
       name,
     });
 
@@ -20,4 +23,4 @@ class CreateTechsService {
   }
 }
 
-export default new CreateTechsService();
+export default CreateTechsService;

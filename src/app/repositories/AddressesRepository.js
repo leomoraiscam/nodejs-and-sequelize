@@ -20,4 +20,4 @@ class AddressRepository {
   }
 }
 
-export default new AddressRepository();
+export default AddressRepository;

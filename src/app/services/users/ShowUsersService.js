@@ -3,7 +3,9 @@ import GlobalError from '../../../errors/GlobalError';
 
 class ShowUsersService {
   async execute(id) {
-    const user = await UsersRepository.findById(id);
+    const usersRepository = new UsersRepository();
+
+    const user = await usersRepository.findById(id);
 
     if (!user) {
       throw new GlobalError('user not found', 404);
@@ -13,4 +15,4 @@ class ShowUsersService {
   }
 }
 
-export default new ShowUsersService();
+export default ShowUsersService;
