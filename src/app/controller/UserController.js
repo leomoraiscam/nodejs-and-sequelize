@@ -1,42 +1,24 @@
-import User from '../models/User';
-import GlobalError from '../../errors/GlobalError';
+import CreateUsersService from '../services/users/CreateUsersService';
+import ShowUsersService from '../services/users/ShowUsersService';
 
 class UserController {
-  async index(req, res) {
-    const user = await User.findAll();
+  async show(request, response) {
+    const { id } = request.params;
 
-    if (!user) {
-      throw new GlobalError('Usuários não encontrados', 204);
-    }
+    const user = await ShowUsersService.execute(id);
 
-    return res.json(user);
+    return response.status(200).json(user);
   }
 
-  async show(req, res) {
-    const { id } = req.params;
+  async create(request, response) {
+    const { name, email } = request.body;
 
-    const user = await User.findByPk(id);
+    const user = await CreateUsersService.execute({
+      name,
+      email,
+    });
 
-    if (!user) {
-      throw new GlobalError('Usuario não encontrado', 204);
-    }
-
-    return res.json(user);
-  }
-
-  async store(req, res) {
-    const { name, email } = req.body;
-
-    const user = await User.create({ name, email });
-
-    if (!user) {
-      throw new GlobalError(
-        'Problemas ao criar o usuario, verifique os dados e tente novamente',
-        400
-      );
-    }
-
-    return res.json({ message: 'Usuário criado com sucesso', user });
+    return response.status(201).json(user);
   }
 }
 
