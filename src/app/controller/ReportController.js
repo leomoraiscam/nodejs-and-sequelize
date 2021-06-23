@@ -1,41 +1,19 @@
-import { Op } from 'sequelize';
-import User from '../models/User';
-import GlobalError from '../../errors/GlobalError';
+import SearchUsersService from '../services/users/SearchUsersService';
 
 class ReportController {
-  async show(req, res) {
-    const users = await User.findAll({
-      attributes: ['name', 'email'],
-      where: {
-        email: {
-          [Op.iLike]: '%@gmail.com.br',
-        },
-      },
-      include: [
-        {
-          association: 'addresses',
-          where: {
-            street: 'Rua Guilherme Gembala',
-          },
-        },
-        {
-          association: 'techs',
-          required: false,
-          where: {
-            name: {
-              [Op.iLike]: 'React%',
-            },
-          },
-        },
-      ],
+  async show(request, response) {
+    const { email, street, nameTech } = request.query;
+
+    const searchUsersService = new SearchUsersService();
+
+    const users = await searchUsersService.execute({
+      email,
+      street,
+      nameTech,
     });
 
-    if (!users) {
-      throw new GlobalError('Usuário não encontrado', 204);
-    }
-
-    return res.json(users);
+    return response.json(users);
   }
 }
 
-export default new ReportController();
+export default ReportController;

@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import User from '../models/User';
 
 class UsersRepository {
@@ -22,6 +23,35 @@ class UsersRepository {
       where: {
         email,
       },
+    });
+  }
+
+  async searchUsers({ email, street, nameTech }) {
+    return User.findAll({
+      attributes: ['name', 'email'],
+      where: {
+        email: {
+          [Op.iLike]: `%${email}`,
+        },
+      },
+      include: [
+        {
+          association: 'addresses',
+          where: {
+            street,
+          },
+        },
+        {
+          association: 'techs',
+          required: false,
+          through: { attributes: [] },
+          where: {
+            name: {
+              [Op.iLike]: `${nameTech}%`,
+            },
+          },
+        },
+      ],
     });
   }
 
