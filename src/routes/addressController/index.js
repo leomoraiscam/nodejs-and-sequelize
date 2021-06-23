@@ -5,7 +5,6 @@ import AddressValidation from '../../app/validation/addressController';
 
 const routes = new Router();
 
-routes.get('/users/:user_id/addresses', AddressController.index);
 routes.post(
   '/users/:user_id/addresses',
   AddressValidation.store,

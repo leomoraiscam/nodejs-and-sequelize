@@ -4,7 +4,7 @@ module.exports = {
   async store(req, res, next) {
     try {
       const schema = yup.object().shape({
-        zipcode: yup.string().required(),
+        zip_code: yup.string().required(),
         street: yup.string().required(),
         number: yup.number().positive().integer().required(),
       });
