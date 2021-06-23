@@ -14,7 +14,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      zipcode: {
+      zip_code: {
         type: Sequelize.STRING,
         allowNull: false,
       },
