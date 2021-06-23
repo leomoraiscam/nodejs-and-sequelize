@@ -5,8 +5,7 @@ import UserValidation from '../../app/validation/userController';
 
 const routes = new Router();
 
-routes.get('/users', UserController.index);
 routes.get('/users/:id', UserController.show);
-routes.post('/users', UserValidation.store, UserController.store);
+routes.post('/users', UserValidation.store, UserController.create);
 
 export default routes;
