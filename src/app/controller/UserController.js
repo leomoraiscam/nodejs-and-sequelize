@@ -1,5 +1,6 @@
 import CreateUsersService from '../services/users/CreateUsersService';
 import ShowUsersService from '../services/users/ShowUsersService';
+import DeleteUsersService from '../services/users/DeleteUsersService';
 
 class UserController {
   async show(request, response) {
@@ -19,6 +20,14 @@ class UserController {
     });
 
     return response.status(201).json(user);
+  }
+
+  async delete(req, res) {
+    const { user_id } = req.params;
+
+    await DeleteUsersService.execute(user_id);
+
+    return res.status(204).send();
   }
 }
 

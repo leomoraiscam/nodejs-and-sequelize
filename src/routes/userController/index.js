@@ -7,5 +7,6 @@ const routes = new Router();
 
 routes.get('/users/:id', UserController.show);
 routes.post('/users', UserValidation.store, UserController.create);
+routes.delete('/users/:user_id', UserController.delete);
 
 export default routes;
