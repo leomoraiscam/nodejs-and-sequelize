@@ -6,9 +6,19 @@ class User extends Model {
       {
         name: DataTypes.STRING,
         email: DataTypes.STRING,
+        createdAt: {
+          type: DataTypes.DATE,
+          field: 'created_at',
+        },
+        updatedAt: {
+          type: DataTypes.DATE,
+          field: 'updated_at',
+        },
       },
       {
         sequelize,
+        tableName: 'users',
+        timestamps: true,
       }
     );
     return this;
