@@ -55,10 +55,11 @@ class UsersRepository {
     });
   }
 
-  async create({ name, email }) {
+  async create({ name, email, password }) {
     return User.create({
       name,
       email,
+      password,
     });
   }
 

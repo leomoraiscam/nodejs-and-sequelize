@@ -6,6 +6,7 @@ class User extends Model {
       {
         name: DataTypes.STRING,
         email: DataTypes.STRING,
+        password: DataTypes.STRING,
         createdAt: {
           type: DataTypes.DATE,
           field: 'created_at',
