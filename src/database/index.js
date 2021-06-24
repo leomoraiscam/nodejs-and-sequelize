@@ -5,8 +5,9 @@ import User from '../app/models/User';
 import Address from '../app/models/Address';
 import Techs from '../app/models/Tech';
 import Project from '../app/models/Project';
+import ProjectTechs from '../app/models/ProjectTechs';
 
-const models = [User, Address, Techs, Project];
+const models = [User, Address, Techs, Project, ProjectTechs];
 
 class Database {
   constructor() {
