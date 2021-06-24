@@ -4,6 +4,7 @@ import User from '../models/User';
 class UsersRepository {
   async findById(id) {
     return User.findByPk(id, {
+      attributes: ['id', 'name', 'email'],
       include: [
         {
           association: 'techs',
@@ -13,6 +14,11 @@ class UsersRepository {
         {
           association: 'addresses',
           attributes: ['zip_code', 'street', 'number'],
+        },
+        {
+          association: 'projects',
+          through: { attributes: [] },
+          attributes: ['title'],
         },
       ],
     });
@@ -50,6 +56,10 @@ class UsersRepository {
               [Op.iLike]: `${nameTech}%`,
             },
           },
+        },
+        {
+          association: 'projects',
+          through: { attributes: [] },
         },
       ],
     });

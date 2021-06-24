@@ -32,6 +32,11 @@ class User extends Model {
       through: 'user_techs',
       as: 'techs',
     });
+    this.belongsToMany(models.Project, {
+      foreignKey: 'user_id',
+      through: 'user_projects',
+      as: 'projects',
+    });
   }
 }
 
