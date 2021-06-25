@@ -11,5 +11,6 @@ routes.post(
   techValidation.create,
   techController.create
 );
+routes.put('/techs/:tech_id', techController.update);
 
 export default routes;

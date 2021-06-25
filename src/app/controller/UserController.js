@@ -24,7 +24,15 @@ class UserController {
       password,
     });
 
-    return response.status(201).json(user);
+    const serializedUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      created_at: user.created_at,
+      updated_at: user.created_at,
+    };
+
+    return response.status(201).json(serializedUser);
   }
 
   async delete(request, response) {

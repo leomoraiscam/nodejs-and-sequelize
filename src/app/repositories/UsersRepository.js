@@ -19,6 +19,13 @@ class UsersRepository {
           association: 'projects',
           through: { attributes: [] },
           attributes: ['title'],
+          include: [
+            {
+              association: 'techs',
+              attributes: ['id', 'name'],
+              through: { attributes: [] },
+            },
+          ],
         },
       ],
     });

@@ -2,7 +2,7 @@ import UsersRepository from '../../repositories/UsersRepository';
 import AddressesRepository from '../../repositories/AddressesRepository';
 import GlobalError from '../../../errors/GlobalError';
 
-class CreateAddressService {
+class UpdateAddressService {
   async execute({ user_id, zip_code, street, number }) {
     const usersRepository = new UsersRepository();
     const addressesRepository = new AddressesRepository();
@@ -13,25 +13,25 @@ class CreateAddressService {
       throw new GlobalError('this specif user not found', 404);
     }
 
-    const addressAlreadyExistByUser =
-      await addressesRepository.findByAddressByUser({
-        user_id,
-        zip_code,
-      });
+    const address = await addressesRepository.findByAddressByUser({
+      user_id,
+      zip_code,
+    });
 
-    if (addressAlreadyExistByUser) {
-      throw new GlobalError('this address already exist for you', 409);
+    if (!address) {
+      throw new GlobalError('this address not found', 404);
     }
 
-    const address = await addressesRepository.create({
-      user_id,
+    Object.assign(address, {
       zip_code,
       street,
       number,
     });
 
-    return address;
+    const updatedAddress = await addressesRepository.update(address);
+
+    return updatedAddress;
   }
 }
 
-export default CreateAddressService;
+export default UpdateAddressService;

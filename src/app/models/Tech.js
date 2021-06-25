@@ -28,6 +28,11 @@ class Tech extends Model {
       through: 'user_techs',
       as: 'users',
     });
+    this.belongsToMany(models.Project, {
+      foreignKey: 'tech_id',
+      through: 'project_techs',
+      as: 'projects',
+    });
   }
 }
 

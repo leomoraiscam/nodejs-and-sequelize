@@ -20,6 +20,6 @@
     "camelcase": "off",
     "no-unused-vars": ["warn", { "argsIgnorePattern": "next" }],
     "linebreak-style": "error",
-    "no-console": "warn"
+    "no-console": "error"
   }
 }

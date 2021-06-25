@@ -11,5 +11,10 @@ routes.post(
   addressValidation.create,
   addressController.create
 );
+routes.put('/users/:user_id/addresses', addressController.update);
+routes.delete(
+  '/users/:user_id/addresses/:address_id',
+  addressController.delete
+);
 
 export default routes;
