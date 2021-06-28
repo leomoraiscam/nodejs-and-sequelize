@@ -1,7 +1,7 @@
 import { verify } from 'jsonwebtoken';
 import GlobalError from '../../errors/GlobalError';
 
-module.exports = async (request, response, next) => {
+export default async (request, response, next) => {
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {

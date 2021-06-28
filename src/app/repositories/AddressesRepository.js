@@ -14,10 +14,10 @@ class AddressRepository {
     return address.save();
   }
 
-  async delete(id) {
+  async delete(zip_code) {
     return Address.destroy({
       where: {
-        id,
+        zip_code,
       },
     });
   }

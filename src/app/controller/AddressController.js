@@ -4,7 +4,7 @@ import DeleteAddressService from '../services/addresses/DeleteAddressService';
 
 class AddressController {
   async create(request, response) {
-    const { user_id } = request.params;
+    const { user: user_id } = request;
     const { zip_code, street, number } = request.body;
 
     const createAddressService = new CreateAddressService();
@@ -20,8 +20,8 @@ class AddressController {
   }
 
   async update(request, response) {
-    const { user_id } = request.params;
     const { zip_code, street, number } = request.body;
+    const { user: user_id } = request;
 
     const updateAddressService = new UpdateAddressService();
 
@@ -36,13 +36,14 @@ class AddressController {
   }
 
   async delete(request, response) {
-    const { user_id, address_id } = request.params;
+    const { user: user_id } = request;
+    const { zip_code } = request.params;
 
     const deleteAddressService = new DeleteAddressService();
 
     await deleteAddressService.execute({
       user_id,
-      address_id,
+      zip_code,
     });
 
     return response.status(201).send();

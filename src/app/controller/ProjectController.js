@@ -3,7 +3,7 @@ import UpdateProjectService from '../services/projects/UpdateProjectService';
 
 class ProjectController {
   async create(request, response) {
-    const { user_id } = request.params;
+    const { user: user_id } = request;
     const { title, tech_ids } = request.body;
 
     const createProjectService = new CreateProjectService();

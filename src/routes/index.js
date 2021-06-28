@@ -1,12 +1,12 @@
 import { Router } from 'express';
 
-import User from './userController';
-import Address from './addressController';
-import Tech from './techController';
-import Report from './reportController';
-import Session from './sessionController';
-import Project from './projectController';
+import User from './user';
+import Address from './address';
+import Tech from './tech';
+import Session from './session';
+import Project from './project';
 import UserProject from './userProject';
+import TechProject from './techProjects';
 
 const routes = new Router();
 
@@ -14,10 +14,10 @@ const loaderRoutes = [
   User,
   Address,
   Tech,
-  Report,
   Session,
   Project,
   UserProject,
+  TechProject,
 ];
 
 loaderRoutes.map((res) => routes.use(res));

@@ -3,7 +3,7 @@ import UpdateTechsService from '../services/techs/UpdateTechsService';
 
 class TechController {
   async create(request, response) {
-    const { user_id } = request.params;
+    const { user: user_id } = request;
     const { name } = request.body;
 
     const createTechsService = new CreateTechsService();

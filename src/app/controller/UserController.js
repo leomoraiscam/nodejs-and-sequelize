@@ -1,10 +1,28 @@
 import CreateUsersService from '../services/users/CreateUsersService';
 import ShowUsersService from '../services/users/ShowUsersService';
 import DeleteUsersService from '../services/users/DeleteUsersService';
+import ListUsersService from '../services/users/ListUsersService';
 
 class UserController {
+  async list(request, response) {
+    const { email, street, nameTech } = request.query;
+    const { limit, page } = request.query;
+
+    const listUsersService = new ListUsersService();
+
+    const users = await listUsersService.execute({
+      email,
+      street,
+      nameTech,
+      limit,
+      page,
+    });
+
+    return response.json(users);
+  }
+
   async show(request, response) {
-    const { id } = request.params;
+    const { user: id } = request;
 
     const showUsersService = new ShowUsersService();
 
@@ -36,7 +54,7 @@ class UserController {
   }
 
   async delete(request, response) {
-    const { id } = request.params;
+    const { user: id } = request;
 
     const deleteUsersService = new DeleteUsersService();
 

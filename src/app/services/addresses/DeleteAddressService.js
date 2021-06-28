@@ -3,7 +3,7 @@ import AddressesRepository from '../../repositories/AddressesRepository';
 import GlobalError from '../../../errors/GlobalError';
 
 class DeleteAddressService {
-  async execute({ user_id, address_id }) {
+  async execute({ user_id, zip_code }) {
     const usersRepository = new UsersRepository();
     const addressesRepository = new AddressesRepository();
 
@@ -13,16 +13,13 @@ class DeleteAddressService {
       throw new GlobalError('this specif user not found', 404);
     }
 
-    const address = await addressesRepository.findById({
-      user_id,
-      address_id,
-    });
+    const address = await addressesRepository.findByZipCode(zip_code);
 
     if (!address) {
       throw new GlobalError('this address not found', 404);
     }
 
-    await addressesRepository.delete(address_id);
+    await addressesRepository.delete(zip_code);
   }
 }
 

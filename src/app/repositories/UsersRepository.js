@@ -2,6 +2,44 @@ import { Op } from 'sequelize';
 import User from '../models/User';
 
 class UsersRepository {
+  async list({ email, street, nameTech, page = 1, limit = 10 }) {
+    return User.findAll({
+      limit,
+      offset: ((page || 1) - 1) * limit,
+      attributes: ['name', 'email'],
+      where: {
+        email: {
+          [Op.iLike]: `%${email}`,
+        },
+      },
+      include: [
+        {
+          association: 'addresses',
+          attributes: ['id', 'zip_code', 'number'],
+          where: {
+            street,
+          },
+        },
+        {
+          association: 'techs',
+          attributes: ['id', 'name'],
+          required: false,
+          through: { attributes: [] },
+          where: {
+            name: {
+              [Op.iLike]: `${nameTech}%`,
+            },
+          },
+        },
+        {
+          association: 'projects',
+          attributes: ['id', 'title'],
+          through: { attributes: [] },
+        },
+      ],
+    });
+  }
+
   async findById(id) {
     return User.findByPk(id, {
       attributes: ['id', 'name', 'email'],
@@ -36,39 +74,6 @@ class UsersRepository {
       where: {
         email,
       },
-    });
-  }
-
-  async searchUsers({ email, street, nameTech }) {
-    return User.findAll({
-      attributes: ['name', 'email'],
-      where: {
-        email: {
-          [Op.iLike]: `%${email}`,
-        },
-      },
-      include: [
-        {
-          association: 'addresses',
-          where: {
-            street,
-          },
-        },
-        {
-          association: 'techs',
-          required: false,
-          through: { attributes: [] },
-          where: {
-            name: {
-              [Op.iLike]: `${nameTech}%`,
-            },
-          },
-        },
-        {
-          association: 'projects',
-          through: { attributes: [] },
-        },
-      ],
     });
   }
 
