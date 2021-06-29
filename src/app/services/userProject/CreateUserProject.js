@@ -10,32 +10,41 @@ class CreateUserProjectService {
     const projectsRepository = new ProjectsRepository();
     const userProjectsRepository = new UserProjectsRepository();
 
-    const verifyUsers = users_id.map(async (user) => {
-      const userExist = await usersRepository.findById(user);
-
-      if (!user) {
-        throw new GlobalError('this specif user not found', 404);
-      }
-
-      return userExist;
-    });
-
-    await Promise.all(verifyUsers);
-
     const project = await projectsRepository.findById(project_id);
 
     if (!project) {
       throw new GlobalError('this specif project not found', 404);
     }
 
-    const items = users_id.map((userProject) => {
-      return {
-        user_id: userProject,
+    const verifyUsers = users_id.map(async (user) => {
+      const userAlreadyExist = await usersRepository.findById(user);
+
+      if (!userAlreadyExist) {
+        throw new GlobalError('this specif user not found', 404);
+      }
+
+      const userExist = await userProjectsRepository.findProjectByUser({
+        user_id: user,
         project_id: project.id,
-      };
+      });
+
+      return userExist;
     });
 
-    const insertUsersProject = await Promise.all(items);
+    const allUsers = await Promise.all(verifyUsers);
+
+    const uniqueUser = users_id
+      .filter(
+        (user) => !allUsers.find((dbUser) => dbUser && dbUser.user_id === user)
+      )
+      .map((userProject) => {
+        return {
+          user_id: userProject,
+          project_id: project.id,
+        };
+      });
+
+    const insertUsersProject = await Promise.all(uniqueUser);
 
     await userProjectsRepository.createAll(insertUsersProject);
   }

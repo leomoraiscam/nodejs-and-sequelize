@@ -10,32 +10,41 @@ class CreateTechsProjectService {
     const projectsRepository = new ProjectsRepository();
     const techsRepository = new TechsRepository();
 
-    const verifyTechs = tech_ids.map(async (user) => {
-      const techExist = await techsRepository.findById(user);
-
-      if (!user) {
-        throw new GlobalError('this specif tech not found', 404);
-      }
-
-      return techExist;
-    });
-
-    await Promise.all(verifyTechs);
-
     const project = await projectsRepository.findById(project_id);
 
     if (!project) {
       throw new GlobalError('this specif project not found', 404);
     }
 
-    const items = tech_ids.map((techProject) => {
-      return {
-        tech_id: techProject,
+    const verifyTechs = tech_ids.map(async (tech) => {
+      const techAlreadyExist = await techsRepository.findById(tech);
+
+      if (!techAlreadyExist) {
+        throw new GlobalError('this specif tech not found', 404);
+      }
+
+      const techExist = await projectTechsRepository.findTechByProject({
+        tech_id: tech,
         project_id: project.id,
-      };
+      });
+
+      return techExist;
     });
 
-    const insertTechsProject = await Promise.all(items);
+    const allTechs = await Promise.all(verifyTechs);
+
+    const uniquesTechsForProject = tech_ids
+      .filter(
+        (tech) => !allTechs.find((dbTech) => dbTech && dbTech.tech_id === tech)
+      )
+      .map((techProject) => {
+        return {
+          tech_id: techProject,
+          project_id: project.id,
+        };
+      });
+
+    const insertTechsProject = await Promise.all(uniquesTechsForProject);
 
     await projectTechsRepository.createAll(insertTechsProject);
   }
